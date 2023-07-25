@@ -106,7 +106,7 @@ console.log(box2.getItem); // "hello"
 //! 제네릭 제약 조건(확장)
 
 // function logTextError2<T>(text: T): T {
-//     console.log(text.length);
+//     console.log(text.length); text 타입이 아직 미정이라 오류발생
 //     return text;
 // }
 
@@ -118,12 +118,13 @@ function logTextError2<T extends LengthWise>(text: T): T {
     console.log(text.length);
     return text;
 }
-// logTextError2(10) 숫자타입에는 length속성이 존재하지 않으므로 오류
+// logTextError2(10) 숫자타입에는 length가 존재하지 않으므로 오류
 logTextError2({length: 0, value: "hi"}); // 0
 // text.length 코드는 객체의 속성 접근과 같이 동작하므로 오류가 나지 않음
 
 //! 객체의 속성을 제약하는 방법
 
+// keyof 키워드는 타입 값에 존재하는 모든 프로퍼티의 키값을 union 형태로 리턴 받습니다.
 function getProperty<T, O extends keyof T>(obj: T, key: O) {
     return obj[key];
 }
@@ -137,13 +138,20 @@ getProperty(objects, 'a');
 //! 제네릭 사용 목적
 
 // 1. 코드의 재사용성 증가
+
+// function printAll<T>(arr: T[]) {
+//     arr.forEach((item) => 
+//         console.log(item)
+//     )
+// }
 function printAll<T>(arr: T[]) {
     arr.forEach(function (item) {
         console.log(item);
     })
 }
-printAll<number>([1, 2, 3]); // 숫자 배열 출력
-printAll<string>(["a", "b", "c"]); // 문자열 배열 출력
+console.log('-----');
+printAll<number>([1, 2, 3]); // 1 2 3 각각 출력
+printAll<string>(["a", "b", "c"]); // a b c 각각 출력
 
 // 2. 타입의 안정성을 보장합니다.
 function printAll2<T>(arg: T): T {

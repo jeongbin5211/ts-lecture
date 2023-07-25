@@ -1,10 +1,10 @@
-// 프로미스(promise)
+// 프로미스(Promise)
 // 비동기 작업의 결과를 나타내는 객체
 // 비동기 작업의 성공 또는 실패를 처리하고, 결과를 받을 수 있도록 도와주는 일을 처리하는 객체
 
-//! promise 생성
-// promise 생성자는 비동기 작업을 수행하는 함수를 인자로 전달 받는다.
-// 함수가 promise를 반환하는 경우, 해당 promise를 이용하여 비동기 작업을 처리 가능
+//! Promise 생성
+// Promise 생성자는 비동기 작업을 수행하는 함수를 인자로 전달 받는다.
+// 함수가 Promise를 반환하는 경우, 해당 Promise를 이용하여 비동기 작업을 처리 가능
 
 function fetchDataP(): Promise<any> {
     return new Promise((resolve, reject) => {
@@ -45,8 +45,8 @@ fetchDataP()
 // 각 then 블록에서 발생한 에러는 가장 가까운 catch 블록으로 전달됩니다.
 
 //! finally 블록
-// promise체인의 마지막에 사용할 수 있는 블록
-// 성공하든 실패하든 항상 실행(switch문의 Default 와 비슷함)
+// Promise체인의 마지막에 사용할 수 있는 블록
+// 성공하든 실패하든 항상 실행(switch문의 Default 와 비슷함 -> Default는 조건과 부합하지 않더라도 마지막에 무조건 실행) 
 // finally 블록은 선택적으로 사용할 수 있으며, 마지막 then블록 또는 catch블록 다음에 위치시킵니다.
 // 작업의 마무리 작업이나 정리 작업을 수행합니다.
 
@@ -55,8 +55,8 @@ fetchDataP()
 //? Promise.all()
 // 여러 개의 Promise를 병렬(배열)로 처리, 모든 Promise의 결과를 기다리는 것이 가능
 
-// Promise.all에서 발생한 에러는 첫 번째로 발생한 에러만을 캐치
-// 여러 개의 Promise 중에서 하나라도 에러 발생 시 그 이후에 나타나는 에러는 무시
+//! Promise.all에서 발생한 에러는 첫 번째로 발생한 에러만을 캐치
+//! 여러 개의 Promise 중에서 하나라도 에러 발생 시 그 이후에 나타나는 에러는 무시
 
 const promise1 = fetchDataP() ;
 const promise2 = fetchDataP() ;
@@ -94,11 +94,16 @@ Promise.race([promise4, promise5, promise6])
 //! Promise.all()메서드 활용
 
 const urls = ["url1", "url2", "url3"];
-const promises = urls.map((url) => fetch(url));
+const promises = urls.map(function(url) {
+        return fetch(url)
+    }); 
+    // 각 url을 순회하면서 fetch함수에 대한 값을 배열로 반환
+    //! fetch함수는 주어진 url로부터 데이터를 비동기적으로 가져옴
 
 Promise.all(promises)
     .then((responses) => {
         return Promise.all(responses.map((response) => response.json()));
+        // 각 response응답을 제이슨 형태로 바꿔서 배열로 반환
     })
     .then((data) => {
         // 모든 데이터 처리

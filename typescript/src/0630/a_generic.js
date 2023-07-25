@@ -74,12 +74,40 @@ function logTextError2(text) {
     console.log(text.length);
     return text;
 }
-// logTextError2(10) 숫자타입에는 length속성이 존재하지 않으므로 오류
+// logTextError2(10) 숫자타입에는 length가 존재하지 않으므로 오류
 logTextError2({ length: 0, value: "hi" }); // 0
 // text.length 코드는 객체의 속성 접근과 같이 동작하므로 오류가 나지 않음
 //! 객체의 속성을 제약하는 방법
+// keyof 키워드는 타입 값에 존재하는 모든 프로퍼티의 키값을 union 형태로 리턴 받습니다.
 function getProperty(obj, key) {
     return obj[key];
 }
 var objects = { a: 1, b: 2, c: 3 };
 getProperty(objects, 'a');
+// getProperty(objects, 'z');
+// 위 함수호출이 오류가 나는 이유
+// 제네릭을 선언할 때 <O extends keyof T> 부분에서 첫 번째 인자로 받는 객체에 없는 속성들은 접근할 수 없게끔 제한했기 때문이다.
+//! 제네릭 사용 목적
+// 1. 코드의 재사용성 증가
+// function printAll<T>(arr: T[]) {
+//     arr.forEach((item) => 
+//         console.log(item)
+//     )
+// }
+function printAll(arr) {
+    arr.forEach(function (item) {
+        console.log(item);
+    });
+}
+console.log('-----');
+printAll([1, 2, 3]); // 1 2 3 각각 출력
+printAll(["a", "b", "c"]); // a b c 각각 출력
+// 2. 타입의 안정성을 보장합니다.
+function printAll2(arg) {
+    return arg;
+}
+var resultGeneric = printAll2("hello");
+var resultGeneric2 = printAll2(123);
+// let errorResult = printAll2<string>(123) 오류를 방지할수있음
+// 3. 타입 추론 기능
+// 함수의 반환 타입이 예측 가능하므로 코드의 가독성이 향상되고 버그 방지가 가능합니다.

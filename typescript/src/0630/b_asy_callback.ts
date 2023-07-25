@@ -15,12 +15,12 @@
 // 콜백 함수 작성
 // 결과 처리를 위해 실행될 로직을 구현합니다.
 
-function fetchDataCb(callback: (error: Error | null, data: any) => void ) {
+function fetchDataCb(callback: (error: Error | null, data: any) => void) {
     // 비동기 작업 수행
     // 작업이 완료되면 결과를 콜백 함수의 인자로 전달하여 호출
 }
 
-fetchDataCb(function(error, data) {
+fetchDataCb((error, data) => {
     if (error) {
         console.log(error);
     } else {
@@ -28,7 +28,7 @@ fetchDataCb(function(error, data) {
     }
 });
 
-// 콜백 헬
+//! 콜백 헬
 // 콜백 패턴을 중첩하여 사용하면 코드의 가독성이 떨어지고 디버깅이 어려움.
 // : 콜백 헬(callback hell)
 
@@ -40,16 +40,16 @@ fetchDataCb(function(error, data) {
 //     })
 // })
 
-// 콜백 체이닝
+//! 콜백 체이닝
 // 콜백 헬을 해결하기 위해 콜백 체이닝을 사용
 // 각 비동기 작업의 결과를 다음 작업의 인자로 전달하는 방식
 
 // asyncFunc1()
 //      .then((result1) => {
-//         return asyncFunc2(result1);
+//      return asyncFunc2(result1)
 //      })
 //      .then((result2) => {
-//     return asyncFunc3(result2);
+//      return asyncFunc3(result2);
 //      })
 //      .then((result3) => {
 //     ...
